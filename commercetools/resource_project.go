@@ -353,11 +353,10 @@ func getStringSlice(d *schema.ResourceData, field string) []string {
 }
 
 func getShippingRateInputType(d *schema.ResourceData) (commercetools.ShippingRateInputType, error) {
-	switch d.Get("shipping_rate_input_type").(string) {
-	case "CartValue":
-		return commercetools.CartValueType{}, nil
-	case "CartScore":
-		return commercetools.CartScoreType{}, nil
+	inputType := d.Get("shipping_rate_input_type").(string)
+	switch inputType {
+	case "CartValue", "CartScore":
+		return commercetools.ShippingRateInputType(inputType), nil
 	case "CartClassification":
 		values, err := getCartClassificationValues(d)
 		if err != nil {
