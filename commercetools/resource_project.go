@@ -102,10 +102,17 @@ func resourceProjectSettings() *schema.Resource {
 					}},
 			},
 			"shipping_rate_input_type": {
+				Description: "Three ways to dynamically select a ShippingRatePriceTier exist. The CartValue type uses " +
+					"the sum of all line item prices, whereas CartClassification and CartScore use the " +
+					"shippingRateInput field on the cart to select a tier",
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			"shipping_rate_cart_classification_values": {
+			"shipping_rate_cart_classification_value": {
+				Description: "If shipping_rate_input_type is set to CartClassification these values are used to create " +
+					"tiers\n. Only a key defined inside the values array can be used to create a tier, or to set a value " +
+					"for the shippingRateInput on the cart. The keys are checked for uniqueness and the request is " +
+					"rejected if keys are not unique",
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Resource{
@@ -371,7 +378,7 @@ func getShippingRateInputType(d *schema.ResourceData) (commercetools.ShippingRat
 
 func getCartClassificationValues(d *schema.ResourceData) ([]commercetools.CustomFieldLocalizedEnumValue, error) {
 	var values []commercetools.CustomFieldLocalizedEnumValue
-	data := d.Get("shipping_rate_cart_classification_values").([]interface{})
+	data := d.Get("shipping_rate_cart_classification_value").([]interface{})
 	for _, item := range data {
 		itemMap := item.(map[string]interface{})
 		label := commercetools.LocalizedString(expandStringMap(itemMap["label"].(map[string]interface{})))

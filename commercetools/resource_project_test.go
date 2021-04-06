@@ -74,7 +74,25 @@ func TestAccProjectCreate_basic(t *testing.T) {
 						"commercetools_project_settings.acctest_project_settings", "shipping_rate_input_type", "CartClassification",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_values.#", "1",
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.#", "2",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.0.key", "Small",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.0.label.en", "Small",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.0.label.nl", "Klein",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.1.key", "Medium",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.1.label.en", "Medium",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.1.label.nl", "Middel",
 					),
 					resource.TestCheckResourceAttr(
 						"commercetools_project_settings.acctest_project_settings", "carts.country_tax_rate_fallback_enabled", "false",
@@ -109,7 +127,16 @@ func TestAccProjectCreate_basic(t *testing.T) {
 						"commercetools_project_settings.acctest_project_settings", "shipping_rate_input_type", "CartClassification",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_values.#", "1",
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.#", "1",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.0.key", "Small",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.0.label.en", "Small",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_cart_classification_value.0.label.nl", "Klein",
 					),
 					resource.TestCheckNoResourceAttr(
 						"commercetools_project_settings.acctest_project_settings", "carts.country_tax_rate_fallback_enabled",
@@ -169,11 +196,19 @@ func testAccProjectConfigUpdate() string {
             }
 
             shipping_rate_input_type = "CartClassification"
-			shipping_rate_cart_classification_values {
+			shipping_rate_cart_classification_value {
 				key = "Small"
 				label = {
 					"en" = "Small"
 					"nl" = "Klein"
+				}
+			}
+
+			shipping_rate_cart_classification_value {
+				key = "Medium"
+				label = {
+					"en" = "Medium"
+					"nl" = "Middel"
 				}
 			}
 		}`
@@ -191,7 +226,7 @@ func testAccProjectConfigDeleteOAuthAndCarts() string {
 			}
 
 			shipping_rate_input_type = "CartClassification"
-			shipping_rate_cart_classification_values {
+			shipping_rate_cart_classification_value {
 				key = "Small"
 				label = {
 					"en" = "Small"
