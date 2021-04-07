@@ -143,6 +143,39 @@ func TestAccProjectCreate_basic(t *testing.T) {
 					),
 				),
 			},
+			// Running this step again so project settings match what later shipping_zone_rate_test will need
+			{
+				Config: testAccProjectConfig(),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "name", "Test this thing",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "countries.#", "3",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "currencies.#", "2",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "languages.#", "4",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "messages.enabled", "true",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "external_oauth.url", "https://example.com/oauth/token",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "external_oauth.authorization_header", "Bearer secret",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "shipping_rate_input_type", "CartValue",
+					),
+					resource.TestCheckResourceAttr(
+						"commercetools_project_settings.acctest_project_settings", "carts.country_tax_rate_fallback_enabled", "true",
+					),
+				),
+			},
 		},
 	})
 }

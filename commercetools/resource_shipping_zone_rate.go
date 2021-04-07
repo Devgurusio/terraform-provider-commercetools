@@ -78,15 +78,20 @@ func resourceShippingZoneRate() *schema.Resource {
 					},
 				},
 			},
-			"shipping_rate_price_tiers": {
+			"shipping_rate_price_tier": {
+				Description: "A price tier is selected instead of the default price when a certain threshold or " +
+					"specific cart value is reached. If no tiered price is suitable for the cart, the base price of the " +
+					"shipping rate is used\n. " +
+					"See also [Shipping Rate Price Tier API Docs](https://docs.commercetools.com/api/projects/shippingMethods#shippingratepricetier)",
 				Type:     schema.TypeList,
 				MinItems: 1,
 				Optional: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"type": {
-							Type:     schema.TypeString,
-							Required: true,
+							Description: "CartValue, CartScore or CartClassification",
+							Type:        schema.TypeString,
+							Required:    true,
 							ValidateFunc: validation.StringInSlice([]string{
 								string(commercetools.ShippingRateTierTypeCartValue),
 								string(commercetools.ShippingRateTierTypeCartScore),
@@ -94,22 +99,26 @@ func resourceShippingZoneRate() *schema.Resource {
 							}, false),
 						},
 						"minimum_cent_amount": {
-							Type:     schema.TypeInt,
-							Optional: true,
+							Description: "If type is CartValue this represents the cent amount of the tier",
+							Type:        schema.TypeInt,
+							Optional:    true,
 						},
 						"value": {
-							Type:     schema.TypeString,
-							Optional: true,
+							Description: "If type is CartClassification, must be a valid key of the CartClassification",
+							Type:        schema.TypeString,
+							Optional:    true,
 						},
 						"score": {
-							Type:     schema.TypeInt,
-							Optional: true,
+							Description: "If type is CartScore. Sets a fixed price for this score value",
+							Type:        schema.TypeFloat,
+							Optional:    true,
 						},
 						"price": {
-							Type:     schema.TypeList,
-							Required: true,
-							MinItems: 1,
-							MaxItems: 1,
+							Description: "The price of the score, value or minimum_cent_amount tier",
+							Type:        schema.TypeList,
+							Required:    true,
+							MinItems:    1,
+							MaxItems:    1,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"currency_code": {
@@ -190,7 +199,7 @@ func resourceShippingZoneRateCreate(d *schema.ResourceData, m interface{}) error
 	log.Printf("[DEBUG] Setting freeAbove: %s", stringFormatObject(freeAbove))
 
 	var shippingRatePriceTiers []commercetools.ShippingRatePriceTier
-	if shippingRatePriceTierState, ok := d.GetOk("shipping_rate_price_tiers"); ok {
+	if shippingRatePriceTierState, ok := d.GetOk("shipping_rate_price_tier"); ok {
 		shippingRatePriceTiers, err = createShippingRatePriceTiers(shippingRatePriceTierState.([]interface{}))
 		if err != nil {
 			return err
@@ -348,7 +357,7 @@ func resourceShippingZoneRateUpdate(d *schema.ResourceData, m interface{}) error
 		Actions: []commercetools.ShippingMethodUpdateAction{},
 	}
 
-	if d.HasChange("price") || d.HasChange("free_above") || d.HasChange("shipping_rate_price_tiers") {
+	if d.HasChange("price") || d.HasChange("free_above") || d.HasChange("shipping_rate_price_tier") {
 		zoneResourceIdentifier := commercetools.ZoneResourceIdentifier{
 			ID: shippingZoneID,
 		}
@@ -387,7 +396,7 @@ func resourceShippingZoneRateUpdate(d *schema.ResourceData, m interface{}) error
 		}
 
 		var newShippingRatePriceTiers []commercetools.ShippingRatePriceTier
-		if shippingRatePriceTiers, ok := d.GetOk("shipping_rate_price_tiers"); ok {
+		if shippingRatePriceTiers, ok := d.GetOk("shipping_rate_price_tier"); ok {
 			newShippingRatePriceTiers, err = createShippingRatePriceTiers(shippingRatePriceTiers.([]interface{}))
 			if err != nil {
 				return err
@@ -462,7 +471,7 @@ func resourceShippingZoneRateDelete(d *schema.ResourceData, m interface{}) error
 	}
 
 	var newShippingRatePriceTiers []commercetools.ShippingRatePriceTier
-	if shippingRatePriceTiers, ok := d.GetOk("shipping_rate_price_tiers"); ok {
+	if shippingRatePriceTiers, ok := d.GetOk("shipping_rate_price_tier"); ok {
 		newShippingRatePriceTiers, err = createShippingRatePriceTiers(shippingRatePriceTiers.([]interface{}))
 		if err != nil {
 			return err

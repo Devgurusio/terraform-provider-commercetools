@@ -291,7 +291,7 @@ func projectUpdate(d *schema.ResourceData, client *commercetools.Client, version
 
 	}
 
-	if d.HasChange("shipping_rate_input_type") || d.HasChange("shipping_rate_cart_classification_values") {
+	if d.HasChange("shipping_rate_input_type") || d.HasChange("shipping_rate_cart_classification_value") {
 		newShippingRateInputType, err := getShippingRateInputType(d)
 		if err != nil {
 			return err

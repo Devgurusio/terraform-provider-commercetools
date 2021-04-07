@@ -39,25 +39,25 @@ func TestAccShippingZoneRate_createAndUpdate(t *testing.T) {
 						"commercetools_shipping_zone_rate.standard-de", "free_above.0.currency_code", "EUR",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.#", "2",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.#", "2",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.0.type", "CartValue",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.0.type", "CartValue",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.0.minimum_cent_amount", "5000",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.0.minimum_cent_amount", "5000",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.0.price.0.cent_amount", "5000",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.0.price.0.cent_amount", "5000",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.1.type", "CartValue",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.1.type", "CartValue",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.1.minimum_cent_amount", "20000",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.1.minimum_cent_amount", "20000",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.1.price.0.cent_amount", "2000",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.1.price.0.cent_amount", "2000",
 					),
 				),
 			},
@@ -77,25 +77,25 @@ func TestAccShippingZoneRate_createAndUpdate(t *testing.T) {
 						"commercetools_shipping_zone_rate.standard-de", "free_above.0.currency_code", "USD",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.#", "2",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.#", "2",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.0.type", "CartScore",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.0.type", "CartScore",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.0.score", "10",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.0.score", "10",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.0.price.0.cent_amount", "5000",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.0.price.0.cent_amount", "5000",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.1.type", "CartScore",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.1.type", "CartScore",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.1.score", "20",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.1.score", "20",
 					),
 					resource.TestCheckResourceAttr(
-						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tiers.1.price.0.cent_amount", "2000",
+						"commercetools_shipping_zone_rate.standard-de", "shipping_rate_price_tier.1.price.0.cent_amount", "2000",
 					),
 				),
 			},
@@ -141,7 +141,7 @@ func testAccShippingZoneRateConfig(taxCategoryName string, shippingMethodName st
 		    currency_code = "%[3]s"
 		}
 		
-		shipping_rate_price_tiers {
+		shipping_rate_price_tier {
             type                = "CartValue"
             minimum_cent_amount = 5000
 
@@ -151,7 +151,7 @@ func testAccShippingZoneRateConfig(taxCategoryName string, shippingMethodName st
             }
 		}
 
-		shipping_rate_price_tiers {
+		shipping_rate_price_tier {
 			type                = "CartValue"
             minimum_cent_amount = 20000
 
@@ -203,22 +203,22 @@ func testAccShippingZoneRateUpdate(taxCategoryName string, shippingMethodName st
 		    currency_code = "%[3]s"
 		}
 		
-		shipping_rate_price_tiers {
-            type                = "CartValue"
-            minimum_cent_amount = 5000
+        shipping_rate_price_tier {
+            type                = "CartScore"
+            score               = 10
 
             price {
-              cent_amount      = 4321
+              cent_amount      = 5000
               currency_code    = "%[3]s"
             }
 		}
 
-		shipping_rate_price_tiers {
-			type                = "CartValue"
-            minimum_cent_amount = 20000
+		shipping_rate_price_tier {
+			type                = "CartScore"
+            score               = 20
 
             price {
-              cent_amount      = 1234
+              cent_amount      = 2000
               currency_code    = "%[3]s"
             }
 		}
